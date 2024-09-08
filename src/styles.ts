@@ -10,23 +10,25 @@ export const colors = {
   text: 'white',
   textSecondary: '#B2B2B2',
   buttonText: 'white',
+  backgroundTertiary: '#3A3A3A',
+  error: '#FF3B30',
 };
 
 // Typography
 export const typography = {
-largeTitle: {
+  largeTitle: {
     fontSize: 28,
     fontWeight: '700' as TextStyle['fontWeight'],
     color: colors.text,
-    } as TextStyle,
+  },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: 'bold' as TextStyle['fontWeight'],
     color: colors.text,
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: 'bold' as TextStyle['fontWeight'],
     color: colors.text,
   },
   body: {

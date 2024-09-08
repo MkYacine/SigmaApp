@@ -1,15 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { Provider } from 'react-redux';
-import { store } from './src/store';
+import { AuthProvider } from './src/contexts/AuthContext';
 import RootNavigator from './src/navigation/RootNavigator';
+import { initializeUserCache } from './src/services/userService';
+import * as Notifications from 'expo-notifications';
 
-export default function App() {
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+const App: React.FC = () => {
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(notification => {
+      console.log('Notification received:', notification);
+    });
+  
+    return () => subscription.remove();
+  }, []);
+  
+  useEffect(() => {
+    initializeUserCache();
+  }, []);
+
   return (
-    <Provider store={store}>
+    <AuthProvider>
       <NavigationContainer>
         <RootNavigator />
       </NavigationContainer>
-    </Provider>
+    </AuthProvider>
   );
-}
+};
+
+export default App;

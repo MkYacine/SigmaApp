@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { signInWithEmailAndPassword, AuthError } from 'firebase/auth';
 import { auth } from '../services/firebase';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../store/slices/authSlice';
 import { colors, typography, commonStyles } from '../styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '../navigation/AuthNavigator';
+import { useAuth } from '../contexts/AuthContext';
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -28,15 +27,21 @@ const validationSchema = Yup.object().shape({
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    console.log('LoginScreen - user:', user);
+  }, [user]);
 
   const handleLogin = async (values: LoginFormValues, { setSubmitting }: FormikHelpers<LoginFormValues>) => {
     setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      dispatch(setUser(userCredential.user));
+      console.log('Login successful:', userCredential.user);
+      // The AuthContext will automatically update the user state
     } catch (error) {
       const authError = error as AuthError;
+      console.error('Login error:', authError);
       Alert.alert('Login Failed', authError.message);
     } finally {
       setLoading(false);

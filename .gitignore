@@ -33,3 +33,29 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# expo
+.expo/
+
+# build
+build/
+dist/
+
+.eslintignore
+.env
+
+android/
+android/app/debug.keystore
+android/.gradle
+android/local.properties
+android/*.iml
+android/*.hprof
+android/.cxx/
+
+functions/serviceAccountKey.json
+functions/lib/**/*.js
+functions/lib/**/*.js.map
+
+firebase-debug.log
+firebase-debug.*.log
+.vscode/
